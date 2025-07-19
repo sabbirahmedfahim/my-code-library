@@ -6,7 +6,7 @@
 using namespace std;
 const int MOD = 1e9 + 7;
 
-ll modPow(ll a, ll b) // O(log b)
+ll Pow(ll a, ll b) // O(log b)
 {
     ll ans = 1 % MOD;
     a %= MOD;

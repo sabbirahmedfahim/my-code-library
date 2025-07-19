@@ -17,7 +17,7 @@ int main()
         while(n%i == 0)
         {
             prime_factors.push_back(i);
-            n/=i;
+            n /= i;
         }
     }
     if(n>1) prime_factors.push_back(n);
