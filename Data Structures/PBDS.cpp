@@ -1,29 +1,49 @@
+// https://codeforces.com/contest/61/problem/E
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-using namespace std;
-#define ll long long
 #define nl '\n'
-#define all(c) c.begin(), c.end()
-#define print(c) for (auto e : c) cout << e << " "; cout << nl;
+#define ll long long
+#define all(c) c.begin(),c.end()
+#define print(c) for(auto e : c) cout << e << " "; cout << nl
 
-template <typename T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-template <typename T> using ordered_multiset = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+/*
+if (x >= 0 && x < (int)o_mulset.size()) // → k-th smallest element (0-based)
+{
+   cout << *o_mulset.find_by_order(x) << nl; 
+} 
+cout << o_mulset.order_of_key(x) << nl; // → count of elements strictly < x
+*/
+using namespace std;
+
+template <typename T> using pbds = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>; // less_equal for multiset
 
 int main() 
-{
-    ios::sync_with_stdio(false); cin.tie(0);
-    
-    ordered_set<int> os = {4, 2, 9, 1, 3}; 
-    os.insert(6); os.erase(2);
-    cout << *os.find_by_order(2) << nl << os.order_of_key(4) << nl << "os: "; print(os);
+{ 
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
 
-    ordered_multiset<int> oms; for (int x : vector<int>{4,2,9,4,1,3}) 
-    oms.insert(x); // do not supports erase
-    cout << oms.order_of_key(4) << nl << *oms.find_by_order(3) << nl;
-    auto it = oms.find_by_order(oms.order_of_key(4)); if (it != oms.end()) oms.erase(it);
-    cout << "oms: "; print(oms);
+    int n; cin >> n;
+    vector<int> a(n);
+    for(auto &e : a) cin>>e;
+
+    pbds<int> o_mulset, curr; 
+    /* Unique Values, Don't need a Map */
+    for(auto e : a) o_mulset.insert(e); 
+
+    ll cnt = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int l = curr.size() - curr.order_of_key(a[i] + 1);
+        int r = o_mulset.order_of_key(a[i]) - curr.order_of_key(a[i]);
+
+        if(min(l, r) > 0) cnt += 1ll * l * r;
+        // cout << a[i] << " " << cnt << nl;
+
+        curr.insert(a[i]);
+    }
+    
+    cout << cnt << nl;
 
     return 0;
 }
