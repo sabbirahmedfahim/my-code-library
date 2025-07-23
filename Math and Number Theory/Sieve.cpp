@@ -8,6 +8,7 @@ const int N = 1e7 + 9; vector<bool> isPrime(N, true);
 
 void sieve() 
 {
+    // isPrime.set(); // sets all bits to true
     isPrime[0] = isPrime[1] = false;
     for (int i = 2; i * i < N; i++) 
     {
