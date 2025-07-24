@@ -29,6 +29,10 @@ int main()
         return false;
     };
 
+    /*
+    For this specific problem, we can optimize the binary search range:
+    - Maximum possible distance (hi) = a[n - 1] - a[0] (farthest stalls), more efficient than using 1e9
+    */
     int lo = 1, hi = 1E9, res = -1;
     while (lo <= hi)
     {
@@ -44,3 +48,4 @@ int main()
 
     return 0;
 }
+// https://www.youtube.com/watch?v=R_Mfw4ew-Vo
