@@ -6,7 +6,7 @@
 #define print(c) for(auto e : c) cout << e << " "; cout << nl
 using namespace std;
 const int N = 1E3 + 5;
-char mat[N][N];
+char mat[N][N]; // change data type ***
 int n, m;
 bool vis[N][N];
 int dis[N][N];

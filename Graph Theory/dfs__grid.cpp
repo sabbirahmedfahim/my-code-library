@@ -7,7 +7,7 @@
 using namespace std;
 const int N = 1E3 + 5;
 char mat[N][N];
-bool vis[N][N];
+bool vis[N][N]; // change data type ***
 int n, m;
 int si, sj, di, dj;
 vector<pair<int, int>> d = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
