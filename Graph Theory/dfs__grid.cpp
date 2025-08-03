@@ -6,8 +6,8 @@
 #define print(c) for(auto e : c) cout << e << " "; cout << nl
 using namespace std;
 const int N = 1E3 + 5;
-char mat[N][N];
-bool vis[N][N]; // change data type ***
+char mat[N][N]; // change data type ***
+bool vis[N][N];
 int n, m;
 int si, sj, di, dj;
 vector<pair<int, int>> d = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
@@ -15,7 +15,6 @@ bool is_valid(int ci, int cj)
 {
     return (ci < n && ci >= 0 && cj < m && cj >= 0);
 }
-bool isFound = false;
 void dfs(int si, int sj)
 {
     vis[si][sj] = true;
@@ -24,7 +23,7 @@ void dfs(int si, int sj)
         int ci = si + d[i].first;  
         int cj = sj + d[i].second; 
  
-        if (is_valid(ci, cj) && !vis[ci][cj] && mat[ci][cj] != '#')
+        if (is_valid(ci, cj) && !vis[ci][cj] && mat[ci][cj] != '#') // change data type ***
         {
             dfs(ci, cj);
         }
