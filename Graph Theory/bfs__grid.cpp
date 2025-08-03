@@ -61,8 +61,6 @@ int main()
         }
     }
 
-    int res = 0;
-
     memset(vis, false, sizeof(vis));
     // memset(dist, -1, sizeof(dist));
 
@@ -73,34 +71,7 @@ int main()
         if(!vis[x][y]) bfs(x, y);
     }
 
-    res = cnt; cnt = 0;
-
-    memset(vis, false, sizeof(vis));
-    // memset(dist, -1, sizeof(dist));
-
-    reverse(all(val_idx));
-    for (int i = 0; i < val_idx.size(); i++)
-    {
-        auto [data, x, y] = val_idx[i];
-        if(!vis[x][y]) bfs(x, y);
-    }
-
-    res = min(res, cnt);
-
-    cout << res << nl;
-
-    // int cnt = 0;
-    // for (int i = 0; i < n; i++)
-    // {
-    //     for (int j = 0; j < m; j++)
-    //     {
-    //         if(mat[i][j] == '.' && !vis[i][j])
-    //         {
-    //             cnt++; bfs(i, j);
-    //         }
-    //     }
-    // }
-    // cout << cnt << nl;
+    cout << cnt << nl;
  
     return 0;
 }
