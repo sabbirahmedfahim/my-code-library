@@ -10,6 +10,7 @@ int mat[N][N]; // adjust data type ***
 int n, m;
 bool vis[N][N];
 int dist[N][N];
+pair<int, int> parent[N][N];
 vector<pair<int, int> > d = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 bool is_valid(int ci, int cj)
 {
@@ -27,6 +28,7 @@ void bfs(int si, int sj)
     q.push({si, sj});
     vis[si][sj] = true;
     // dist[si][sj] = 0;
+    // parent[si][sj] = {-1, -1};
     while (!q.empty())
     {
         pair<int,int> par = q.front();
@@ -41,6 +43,7 @@ void bfs(int si, int sj)
                 q.push({ci, cj});
                 vis[ci][cj] = true;
                 // dist[ci][cj] = dist[par.first][par.second] + 1;
+                // parent[ci][cj] = par;
             }
         }
     }
@@ -72,6 +75,15 @@ int main()
     }
 
     cout << cnt << nl;
+
+    /* PATH */
+    // vector<pair<int, int>> path;
+    // pair<int, int> curr = {di, dj}; // d -> destination
+    // while (!(curr.first == -1 && curr.second == -1))
+    // {
+    //     path.push_back(curr);
+    //     curr = parent[curr.first][curr.second];
+    // }
  
     return 0;
 }
