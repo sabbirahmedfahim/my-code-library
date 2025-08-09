@@ -1,4 +1,4 @@
-// https://codeforces.com/contest/61/problem/E
+// https://cses.fi/problemset/task/1076/
 #include <bits/stdc++.h>
 #define nl '\n'
 #define ll long long
@@ -8,6 +8,7 @@
 #include<ext/pb_ds/assoc_container.hpp>
 #include<ext/pb_ds/tree_policy.hpp>
 using namespace __gnu_pbds;
+
 using namespace std;
 
 template <typename T> using pbds = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>; // less_equal for multiset
@@ -16,28 +17,23 @@ int main()
 { 
     ios_base::sync_with_stdio(false); cin.tie(NULL);
 
-    int n; cin >> n;
+    int n, k; cin >> n >> k;
     vector<int> a(n);
-    for(auto &e : a) cin>>e;
+    for(auto &e : a) cin >> e;
 
-    pbds<int> o_mulset, curr; 
-    /* Unique Values, Don't need a Map */
-    for(auto e : a) o_mulset.insert(e); 
-
-    ll cnt = 0;
-    for (int i = 0; i < n; i++)
+    pbds<int> o_mulset;
+    for (int l = 0, r = 0; r < n; r++)
     {
-        int l = curr.size() - curr.order_of_key(a[i] + 1);
-        int r = o_mulset.order_of_key(a[i]) - curr.order_of_key(a[i]);
+        o_mulset.insert(a[r]);
+        if(r - l + 1 == k)
+        {
+            cout << *o_mulset.find_by_order((k-1)/2) << " ";
 
-        if(min(l, r) > 0) cnt += 1ll * l * r;
-        // cout << a[i] << " " << cnt << nl;
-
-        curr.insert(a[i]);
+            // since we can delete elements from multiset even if it contains duplicates, don't need a pair in the case
+            o_mulset.erase(o_mulset.find_by_order(o_mulset.order_of_key(a[l++])));
+        }
     }
-    
-    cout << cnt << nl;
-    
+    cout << nl;
 
     return 0;
 }
@@ -48,14 +44,7 @@ if (x >= 0 && x < (int)o_mulset.size()) // → k-th smallest element (0-based)
 } 
 cout << o_mulset.order_of_key(x) << nl; // → count of elements strictly < x
 */
-/* Useful Technique
-Use pbds<pair<int, int>> to store {value, index} pairs.
-Since ordered_set (PBDS) doesn’t allow duplicates, the index makes each entry unique.
-
-    // Get values by index, but sorted based on their values.***
-    window.insert({VALUE, index});          // insert value with index
-    auto it = window.find_by_order(idx);    // get idx-th smallest element
-    cout << it->first << " ";               // access the VALUE
-
-    window.erase({VALUE, index});           // remove VALUE at index
+/* 
+ordered multiset allows duplicates and we can erase them, but it's first occurance, but
+Use pbds<pair<int, int>> to store {value, index} pairs where needed
 */
