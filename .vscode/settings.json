@@ -17,7 +17,10 @@
         "unordered_map": "cpp",
         "unordered_set": "cpp",
         "flat_map": "cpp",
-        "flat_set": "cpp"
+        "flat_set": "cpp",
+        "complex": "cpp",
+        "valarray": "cpp",
+        "cmath": "cpp"
     },
     "code-runner.executorMap": {
         "cpp": "cd $dir && /opt/homebrew/bin/g++-15 -std=c++17 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
