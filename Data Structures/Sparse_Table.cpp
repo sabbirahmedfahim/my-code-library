@@ -36,7 +36,7 @@ struct SparseTable
             }
         }
     }
-    ll queryConstTime(int l, int r) // Idempotent Operations (Min, Max, GCD, AND, OR) => O(1)
+    ll queryIdempotent(int l, int r) // Idempotent Operations (Min, Max, GCD, AND, OR) => O(1)
     { 
         int d = lg(r - l + 1);
         return op(table[l][d], table[r - (1 << d) + 1][d]);
