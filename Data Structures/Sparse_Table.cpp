@@ -13,6 +13,7 @@ using namespace std;
 
 // 0-based indexing, query finds in range [first, last]
 #define lg(x) (31 - __builtin_clz(x))
+// #define lg(x) (63 - __builtin_clzll(x))
 const int N = 3e5 + 7;
 const int LOG = lg(N);
 
