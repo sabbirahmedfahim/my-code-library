@@ -119,7 +119,16 @@ int main()
 * Notes:
 * - buildPrefixHash() is auto-called in the constructor; buildSuffixHash() must be 
 *   uncommented when a suffix hash is needed.
-* - Random base/mod helps reduce collisions but keep consistent for reproducibility.
-* - appendChar() updates the hash in O(1) when extending the string.
-* - concatSubstr() works well even if multiple hashes are declared.
+* - Random base/mod helps reduce collisions; keep consistent for reproducibility.
+* - appendChar() updates the hash in O(1) when extending the string; for substrings, O(n).
+* - concatSubstr() works as expected.
+* - If you face TLE due to 'll', you can replace storage types with 'int' 
+*   and add '1LL *' before any multiplication that might overflow.
+
+# Problem: Length of Longest Palindromic Substring
+# Approach: 
+  - Precompute prefix & suffix hash. 
+  - For each center (odd/even), binary search the maximum radius where prefix-hash 
+    matches suffix-hash.
+  - Track the maximum length. Complexity: O(n log n).
 */

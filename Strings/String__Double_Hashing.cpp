@@ -134,6 +134,8 @@ int main()
 *   consistent multi-hash comparisons.
 * - appendChar() updates the hash in O(1) when extending the string; for substrings, O(n).
 * - concatSubstr() works well even if multiple hashes are declared.
+* - If you face TLE due to 'll', you can replace storage types with 'int' 
+*   and add '1LL *' before any multiplication or addition that might overflow.
 
 # Problem: Length of Longest Palindromic Substring
 # Approach: 
