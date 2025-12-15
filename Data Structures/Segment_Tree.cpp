@@ -48,7 +48,8 @@ struct ST
         { 
             return 0; // <== careful 
             /*
-            min: return LLONG_MAX •	max: return LLONG_MIN •	XOR: return 0
+            XOR,OR-> return 0; AND-> return ~0LL;
+            min-> return LLONG_MAX; max-> return LLONG_MIN;
             */
         }
         if (l <= st && en <= r) // Complete overlapped (l-r in range)
