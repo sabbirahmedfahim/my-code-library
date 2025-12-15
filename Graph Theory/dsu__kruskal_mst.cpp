@@ -1,44 +1,75 @@
 #include <bits/stdc++.h>
-#define ll long long
-#define nl '\n'
 using namespace std;
-const int N = 1e5 + 5;
-int parent[N], group_size[N]; // union by size/rank is faster than normal union
 
-void dsu_initialize(int n) 
-{
-    for (int i = 0; i < n; i++) parent[i] = -1, group_size[i] = 1;
-}
+const int N = 5e5 + 9;
 
-int dsu_find(int node) 
-{
-    if(parent[node] == -1) return node;
-    return parent[node] = dsu_find(parent[node]); // path compression
-}
+struct DSU {
+    int parent[N], rank_[N], group_size[N], components;
 
-void dsu_union_by_size(int node1, int node2) 
-{
-    int leaderA = dsu_find(node1), leaderB = dsu_find(node2);
-    if(leaderA == leaderB) return;
-    if(group_size[leaderA] > group_size[leaderB])
-        parent[leaderB] = leaderA, group_size[leaderA] += group_size[leaderB]; 
-    else
-        parent[leaderA] = leaderB, group_size[leaderB] += group_size[leaderA];
-}
+    void dsu_initialize(int n) // O(n)
+    {
+        components = n;
+        for (int i = 0; i <= n; i++) parent[i] = i, rank_[i] = 0, group_size[i] = 1;
+    }
 
-class Edge 
+    int dsu_find(int node) // O(alpha(n))
+    {
+        if (parent[node] == node) return node;
+        return parent[node] = dsu_find(parent[node]);
+    }
+
+    bool dsu_same(int u, int v) // O(alpha(n))
+    {
+        return dsu_find(u) == dsu_find(v);
+    }
+
+    int dsu_get_size(int node) // O(alpha(n))
+    {
+        int leader = dsu_find(node);
+        return group_size[leader];
+    }
+
+    int dsu_num_components() // O(1)
+    {
+        return components;
+    }
+
+    int dsu_merge(int u, int v) // O(alpha(n))
+    {
+        int leader_u = dsu_find(u), leader_v = dsu_find(v);
+        if (leader_u == leader_v) return -1;
+        components--;
+
+        if (rank_[leader_u] > rank_[leader_v]) swap(leader_u, leader_v);
+        parent[leader_u] = leader_v;
+        group_size[leader_v] += group_size[leader_u];
+
+        if (rank_[leader_u] == rank_[leader_v]) rank_[leader_v]++;
+        return leader_v;
+    }
+};
+
+struct Edge 
 {
-public:
     int u, v, w; 
-    Edge(int u, int v, int w): u(u), v(v), w(w) {}
+    Edge(int u, int v, int w) 
+    {
+        this->u = u;
+        this->v = v;
+        this->w = w;
+    }
 };
 
 bool cmp(Edge a, Edge b) { return a.w < b.w; }
 
 int main() 
 {
-    int n, e; cin >> n >> e;
-    dsu_initialize(n); 
+    int n, e; 
+    cin >> n >> e;
+
+    DSU dsu;
+    dsu.dsu_initialize(n);
+
     vector<Edge> edgeList;
     while (e--) 
     {
@@ -46,16 +77,19 @@ int main()
         cin >> u >> v >> w;
         edgeList.push_back(Edge(u, v, w));
     }
-    sort(edgeList.begin(), edgeList.end(), cmp); 
-    int totalCost = 0; // store costs
+
+    sort(edgeList.begin(), edgeList.end(), cmp);
+
+    int totalCost = 0;
     for (Edge ed : edgeList) 
     {
-        int leaderU = dsu_find(ed.u), leaderV = dsu_find(ed.v);
-        if(leaderU != leaderV) {
-            dsu_union_by_size(ed.u, ed.v);
+        if (!dsu.dsu_same(ed.u, ed.v)) 
+        {
+            dsu.dsu_merge(ed.u, ed.v);
             totalCost += ed.w;
-        } 
+        }
     }
+
     cout << totalCost;
     return 0;
 }

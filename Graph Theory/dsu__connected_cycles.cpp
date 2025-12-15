@@ -1,68 +1,96 @@
 // https://codeforces.com/contest/977/problem/E
 #include <bits/stdc++.h>
-#define ll long long int
-#define nl '\n'
 using namespace std;
-const int N = 2e5 + 5;
-int parent[N], group_size[N];
-vector<int> adj[N];
-void dsu_initialize(int n) 
-{
-    for (int i = 0; i <= n; i++) parent[i] = -1, group_size[i] = 1;
-}
-int dsu_find(int node) 
-{
-    if(parent[node] == -1) return node;
-    return parent[node] = dsu_find(parent[node]); // path compression
-}
 
-void dsu_union(int node1, int node2) 
-{
-    int leaderA = dsu_find(node1), leaderB = dsu_find(node2);
-    if(leaderA != leaderB) 
+const int N = 5e5 + 9;
+struct DSU {
+    int parent[N], rank_[N], group_size[N], components;
+
+    void dsu_initialize(int n) // O(n)
     {
-        if(group_size[leaderA] < group_size[leaderB]) 
-            swap(leaderA, leaderB);
-        parent[leaderB] = leaderA;
-        group_size[leaderA] += group_size[leaderB];
+        components = n;
+        for (int i = 0; i <= n; i++) parent[i] = i, rank_[i] = 0, group_size[i] = 1;
     }
-}
 
-int main() {
-    int n, e; cin >> n >> e;
-    dsu_initialize(n);
+    int dsu_find(int node) // O(alpha(n))
+    {
+        if (parent[node] == node) return node;
+        return parent[node] = dsu_find(parent[node]);
+    }
 
-    int cntCycle = 0;
-    while (e--) {
-        int u, v; cin >> u >> v;
-        dsu_union(u, v);
+    bool dsu_same(int u, int v) // O(alpha(n))
+    {
+        return dsu_find(u) == dsu_find(v);
+    }
+
+    int dsu_get_size(int node) // O(alpha(n))
+    {
+        int leader = dsu_find(node);
+        return group_size[leader];
+    }
+
+    int dsu_num_components() // O(1)
+    {
+        return components;
+    }
+
+    int dsu_merge(int u, int v) // O(alpha(n))
+    {
+        int leader_u = dsu_find(u), leader_v = dsu_find(v);
+        if (leader_u == leader_v) return -1;
+        components--;
+
+        if (rank_[leader_u] > rank_[leader_v]) swap(leader_u, leader_v);
+        parent[leader_u] = leader_v;
+        group_size[leader_v] += group_size[leader_u];
+
+        if (rank_[leader_u] == rank_[leader_v]) rank_[leader_v]++;
+        return leader_v;
+    }
+};
+
+vector<int> adj[N];
+
+int main() 
+{
+    int n, e;
+    cin >> n >> e;
+
+    DSU dsu;
+    dsu.dsu_initialize(n);
+
+    while (e--) 
+    {
+        int u, v;
+        cin >> u >> v;
+        dsu.dsu_merge(u, v);
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
 
-
-    map<int, vector<int> > leaders;
-    for (int i = 1; i <= n; i++)
+    map<int, vector<int>> leaders;
+    for (int i = 1; i <= n; i++) 
     {
-        int leader = dsu_find(i);
+        int leader = dsu.dsu_find(i);
         leaders[leader].push_back(i);
     }
-    
-    for(auto [leader, nodes] : leaders)
+
+    int cntCycle = 0;
+    for (auto [leader, nodes] : leaders) 
     {
         bool isCycle = true;
-        for(auto data : nodes)
+        for (auto node : nodes) 
         {
-            if(adj[data].size() != 2) 
+            if (adj[node].size() != 2) 
             {
-                isCycle = false; break;
+                isCycle = false;
+                break;
             }
         }
-        if(nodes.size() <= 2) isCycle = false;
-
-        if(isCycle) cntCycle++;
+        if (nodes.size() <= 2) isCycle = false;
+        if (isCycle) cntCycle++;
     }
 
-    cout << cntCycle << nl;
+    cout << cntCycle << '\n';
     return 0;
 }
