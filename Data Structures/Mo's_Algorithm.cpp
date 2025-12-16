@@ -8,7 +8,7 @@ using Mo's Algorithm (offline query optimization).
 #define all(c) c.begin(),c.end()
 #define print(c) for(auto e : c) cout << e << " "; cout << nl
 using namespace std;
-const int N = 1E5 + 7;
+const int N = 2E5 + 7;
 int blockSize; 
 class Q
 {
