@@ -10,9 +10,8 @@ using Mo's Algorithm (offline query optimization).
 using namespace std;
 const int N = 2E5 + 7;
 int blockSize; 
-class Q
+struct Q
 {
-    public:
     int l, r, idx;
 };
 Q q[N];

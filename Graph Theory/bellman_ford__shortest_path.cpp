@@ -3,10 +3,9 @@
 #define ll long long
 using namespace std;
 /*keep in mind, there's no valid answer if the graph contains a negative cycle */ 
-class Edge
+struct Edge
 {
-public:
-    int u, v, c; 
+    int u, v, c;
     Edge(int u, int v, int c)
     {
         this->u = u;
